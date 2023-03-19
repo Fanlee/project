@@ -1,5 +1,5 @@
 const download = require('download-git-repo')
-
-download('git@github.com:Fanlee/study-notes.git', './tmp',function(err) {
+var child_process = require('child_process')
+download('direct:https://gitee.com/anyueleo/vue-template.git', './tmp', {clone:true}, function (err) {
   console.log(err)
 });
