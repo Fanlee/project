@@ -4,7 +4,6 @@ const morgan = require('morgan')
 
 const router = require('./router')
 const app = express()
-
 // 解析客户端请求
 app.use(express.json())
 app.use(express.urlencoded())
