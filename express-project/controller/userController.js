@@ -9,9 +9,10 @@ exports.list = async (req, res) => {
 }
 
 exports.register = async (req, res) => {
-  console.log(req.body)
   const instance = new User(req.body)
-  const u = await instance.save()
-  console.log(u)
-  res.status(200).json(u)
+  // 返回得时候删除密码
+  let data = await instance.save()
+  // 返回数据的时候删除密码
+  const { password, ...user } = data.toJSON()
+  res.status(200).json({ user })
 }
