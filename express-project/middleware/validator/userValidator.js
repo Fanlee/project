@@ -2,7 +2,7 @@
  * @Author: lihuan
  * @Date: 2023-04-11 23:01:56
  * @LastEditors: lihuan
- * @LastEditTime: 2023-04-12 22:20:35
+ * @LastEditTime: 2023-04-13 22:08:23
  * @Description:
  */
 const { body } = require('express-validator')
@@ -49,4 +49,9 @@ module.exports.register = validator([
     .isLength({ min: 6 })
     .withMessage('密码不能小于6位')
     .bail(),
+])
+
+module.exports.login = validator([
+  body('phone').notEmpty().withMessage('手机号不能为空').bail(),
+  body('password').notEmpty().withMessage('密码不能为空').bail(),
 ])
