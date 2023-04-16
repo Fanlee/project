@@ -2,7 +2,7 @@
  * @Author: lihuan
  * @Date: 2023-03-30 21:58:52
  * @LastEditors: lihuan
- * @LastEditTime: 2023-04-12 23:05:31
+ * @LastEditTime: 2023-04-16 22:21:58
  * @Description:
  */
 const mongoose = require('mongoose')
@@ -28,6 +28,14 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   avatar: {
+    type: String,
+    default: null,
+  },
+  cover: {
+    type: String,
+    default: null,
+  },
+  channeldes: {
     type: String,
     default: null,
   },

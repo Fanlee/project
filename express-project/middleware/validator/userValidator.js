@@ -2,7 +2,7 @@
  * @Author: lihuan
  * @Date: 2023-04-11 23:01:56
  * @LastEditors: lihuan
- * @LastEditTime: 2023-04-13 22:08:23
+ * @LastEditTime: 2023-04-16 23:06:10
  * @Description:
  */
 const { body } = require('express-validator')
@@ -54,4 +54,27 @@ module.exports.register = validator([
 module.exports.login = validator([
   body('phone').notEmpty().withMessage('手机号不能为空').bail(),
   body('password').notEmpty().withMessage('密码不能为空').bail(),
+])
+
+module.exports.update = validator([
+  body('username').custom(async (val) => {
+    const username = await User.findOne({ username: val })
+    if (username) {
+      return Promise.reject('用户名已存在')
+    }
+  }),
+  body('phone').custom(async (val) => {
+    const phone = await User.findOne({ phone: val })
+    if (phone) {
+      return Promise.reject('手机号已存在')
+    }
+  }),
+  body('email')
+    .custom(async (val) => {
+      const email = await User.findOne({ email: val })
+      if (email) {
+        return Promise.reject('邮箱已存在')
+      }
+    })
+    .bail(),
 ])
