@@ -2,16 +2,17 @@
  * @Author: lihuan
  * @Date: 2023-03-29 22:54:19
  * @LastEditors: lihuan
- * @LastEditTime: 2023-04-13 22:37:08
+ * @LastEditTime: 2023-04-16 21:42:05
  * @Description:
  */
 const express = require('express')
-const router = express.Router()
 const userController = require('../controller/userController')
 const userValidator = require('../middleware/validator/userValidator')
 
+const router = express.Router()
+const { verfiyToken } = require('../util/jwt')
 router.post('/registers', userValidator.register, userController.register)
 router.post('/logins', userValidator.login, userController.login)
-router.get('/lists', userController.list)
+router.get('/lists', verfiyToken, userController.list)
 
 module.exports = router

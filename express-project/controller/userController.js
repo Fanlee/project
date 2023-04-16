@@ -2,7 +2,7 @@
  * @Author: lihuan
  * @Date: 2023-03-29 22:54:19
  * @LastEditors: lihuan
- * @LastEditTime: 2023-04-13 22:57:28
+ * @LastEditTime: 2023-04-16 22:15:56
  * @Description:
  */
 const { User } = require('../model')
@@ -28,9 +28,11 @@ exports.login = async (req, res) => {
 }
 
 exports.list = async (req, res) => {
+  // console.log(req)
   // console.log(req.body)
   // const instance = new User(req.body)
   // const u = await instance.save()
   // console.log(u)
   // res.statu(200).json(u)
+  res.send('/lists')
 }
