@@ -2,9 +2,10 @@
  * @Author: lihuan
  * @Date: 2023-03-29 22:54:19
  * @LastEditors: lihuan
- * @LastEditTime: 2023-04-16 22:33:38
+ * @LastEditTime: 2023-04-17 22:57:33
  * @Description:
  */
+const fs = require('fs/promises')
 const { User } = require('../model')
 const { createToken } = require('../util/jwt')
 
@@ -33,6 +34,25 @@ exports.list = async (req, res) => {
 }
 
 exports.update = async (req, res) => {
-  // res.statu(200).json(u)
-  res.send('/update')
+  const result = await User.findByIdAndUpdate(req.user.userinfo._id, req.body, {
+    new: true,
+  })
+  res.status(200).json({ user: result })
+}
+
+exports.upload = async (req, res) => {
+  console.log(req.file)
+  const filename = req.file.originalname
+  const str = filename.split('.')
+  const fileType = str[str.length - 1]
+
+  try {
+    await fs.rename(
+      `./public/${req.file.filename}`,
+      `./public/${req.file.filename}.${fileType}`
+    )
+    res.status(200).json({ filepath: `${req.file.filename}.${fileType}` })
+  } catch (error) {
+    res.status(500).json({ err: error })
+  }
 }
