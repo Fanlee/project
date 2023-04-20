@@ -2,7 +2,7 @@
  * @Author: lihuan
  * @Date: 2023-03-29 22:54:19
  * @LastEditors: lihuan
- * @LastEditTime: 2023-04-17 22:57:33
+ * @LastEditTime: 2023-04-20 22:32:04
  * @Description:
  */
 const fs = require('fs/promises')
@@ -41,7 +41,6 @@ exports.update = async (req, res) => {
 }
 
 exports.upload = async (req, res) => {
-  console.log(req.file)
   const filename = req.file.originalname
   const str = filename.split('.')
   const fileType = str[str.length - 1]

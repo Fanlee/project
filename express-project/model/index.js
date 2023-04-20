@@ -1,3 +1,10 @@
+/*
+ * @Author: lihuan
+ * @Date: 2023-03-30 21:21:03
+ * @LastEditors: lihuan
+ * @LastEditTime: 2023-04-20 22:13:53
+ * @Description:
+ */
 const mongoose = require('mongoose')
 
 mongoose
@@ -11,4 +18,5 @@ mongoose
 
 module.exports = {
   User: mongoose.model('User', require('./userModel')),
+  Video: mongoose.model('Video', require('./videoModel')),
 }
