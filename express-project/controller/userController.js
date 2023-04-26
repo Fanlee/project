@@ -2,11 +2,11 @@
  * @Author: lihuan
  * @Date: 2023-03-29 22:54:19
  * @LastEditors: lihuan
- * @LastEditTime: 2023-04-20 22:32:04
+ * @LastEditTime: 2023-04-26 23:09:28
  * @Description:
  */
 const fs = require('fs/promises')
-const { User } = require('../model')
+const { User, Subscribe } = require('../model')
 const { createToken } = require('../util/jwt')
 
 exports.register = async (req, res) => {
@@ -53,5 +53,30 @@ exports.upload = async (req, res) => {
     res.status(200).json({ filepath: `${req.file.filename}.${fileType}` })
   } catch (error) {
     res.status(500).json({ err: error })
+  }
+}
+
+exports.subscribe = async (req, res) => {
+  const userId = req.user.userinfo._id
+  const { channelId } = req.params
+  if (userId === channelId) {
+    return res.status(401).json({ err: '不能关注自己！' })
+  }
+  const data = await Subscribe.findOne({
+    user: userId,
+    channel: channelId,
+  })
+  if (!data) {
+    try {
+      await new Subscribe({ user: userId, channel: channelId }).save()
+      const user = await User.findById(channelId)
+      user.subscribeCount++
+      await user.save()
+      res.status(200).json({ msg: '关注成功' })
+    } catch (error) {
+      res.status(500).json({ err: error })
+    }
+  } else {
+    res.status(401).json({ err: '已经订阅了此频道！' })
   }
 }

@@ -15,17 +15,26 @@ module.exports.createvideo = async (req, res) => {
   }
 }
 
-module.exports.getvideolist = async (req, res) => {
+module.exports.videolist = async (req, res) => {
   const { pageNum = 1, pageSize = 10 } = req.body
   try {
     const data = await Video.find()
       .skip((pageNum - 1) * pageSize)
       .limit(pageSize)
       .sort({ createAt: -1 })
-      .populate('user')
+      .populate('user', '_id username cover')
     const total = await Video.countDocuments()
     res.status(200).json({ data, total })
   } catch (error) {
     res.status(500).json({ err: error })
   }
+}
+
+module.exports.video = async (req, res) => {
+  const { videoId } = req.params
+  const data = await Video.findById(videoId).populate(
+    'user',
+    '_id username cover'
+  )
+  res.status(200).json(data)
 }

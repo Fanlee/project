@@ -2,7 +2,7 @@
  * @Author: lihuan
  * @Date: 2023-03-30 21:58:52
  * @LastEditors: lihuan
- * @LastEditTime: 2023-04-16 22:21:58
+ * @LastEditTime: 2023-04-26 23:03:01
  * @Description:
  */
 const mongoose = require('mongoose')
@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
   channeldes: {
     type: String,
     default: null,
+  },
+  subscribeCount: {
+    type: Number,
+    default: 0,
   },
   ...baseModel,
 })
