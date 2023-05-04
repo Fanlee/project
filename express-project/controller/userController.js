@@ -2,7 +2,7 @@
  * @Author: lihuan
  * @Date: 2023-03-29 22:54:19
  * @LastEditors: lihuan
- * @LastEditTime: 2023-04-26 23:09:28
+ * @LastEditTime: 2023-05-04 22:23:41
  * @Description:
  */
 const fs = require('fs/promises')
@@ -78,5 +78,29 @@ exports.subscribe = async (req, res) => {
     }
   } else {
     res.status(401).json({ err: '已经订阅了此频道！' })
+  }
+}
+
+exports.unsubscribe = async (req, res) => {
+  const userId = req.user.userinfo._id
+  const { channelId } = req.params
+  if (userId === channelId) {
+    return res.status(401).json({ err: '不能取消关注自己！' })
+  }
+  const record = await Subscribe.findOneAndRemove({
+    user: userId,
+    channel: channelId,
+  })
+  if (record) {
+    try {
+      const user = await User.findById(channelId)
+      user.subscribeCount--
+      await user.save()
+      res.status(200).json({ msg: '取消关注成功' })
+    } catch (error) {
+      res.status(500).json({ err: error })
+    }
+  } else {
+    res.status(401).json({ err: '没有订阅了此频道！' })
   }
 }
