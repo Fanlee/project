@@ -2,7 +2,7 @@
  * @Author: lihuan
  * @Date: 2023-03-29 22:54:19
  * @LastEditors: lihuan
- * @LastEditTime: 2023-04-26 23:02:45
+ * @LastEditTime: 2023-05-05 21:49:49
  * @Description:
  */
 const express = require('express')
@@ -16,6 +16,7 @@ const { verfiyToken } = require('../util/jwt')
 router.post('/registers', userValidator.register, userController.register)
 router.get('/subscribe/:channelId', verfiyToken(), userController.subscribe)
 router.get('/unsubscribe/:channelId', verfiyToken(), userController.unsubscribe)
+router.get('/channel/:channelId', verfiyToken(false), userController.channel)
 router.post('/logins', userValidator.login, userController.login)
 router.get('/lists', verfiyToken(), userController.list)
 router.post(

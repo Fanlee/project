@@ -2,7 +2,7 @@
  * @Author: lihuan
  * @Date: 2023-03-29 22:54:19
  * @LastEditors: lihuan
- * @LastEditTime: 2023-05-04 22:23:41
+ * @LastEditTime: 2023-05-05 21:58:04
  * @Description:
  */
 const fs = require('fs/promises')
@@ -103,4 +103,31 @@ exports.unsubscribe = async (req, res) => {
   } else {
     res.status(401).json({ err: '没有订阅了此频道！' })
   }
+}
+
+exports.channel = async (req, res) => {
+  let isSubscribe = false
+  // 已登录
+  if (req.user) {
+    const record = await Subscribe.findOne({
+      user: req.user.userinfo._id,
+      channel: req.params.channelId,
+    })
+    if (record) {
+      isSubscribe = true
+    }
+  }
+  const { _id, username, image, subscribeCount, cover, channeldes, ...rest } =
+    await User.findById(req.params.channelId)
+  res.status(200).json({
+    data: {
+      _id,
+      username,
+      image,
+      subscribeCount,
+      cover,
+      channeldes,
+      isSubscribe,
+    },
+  })
 }
