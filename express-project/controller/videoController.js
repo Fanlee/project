@@ -1,4 +1,12 @@
-const { Video } = require('../model')
+/*
+ * @Author: lihuan
+ * @Date: 2023-04-20 22:15:44
+ * @LastEditors: lihuan
+ * @LastEditTime: 2023-05-05 23:18:51
+ * @Description:
+ */
+const { Video, Videocomment } = require('../model')
+
 module.exports.createvideo = async (req, res) => {
   const userId = req.user.userinfo._id
   const body = {
@@ -37,4 +45,21 @@ module.exports.video = async (req, res) => {
     '_id username cover'
   )
   res.status(200).json(data)
+}
+
+// 视频评论
+module.exports.comment = async (req, res) => {
+  const { videoId } = req.params
+  const videoInfo = await Video.findById(videoId)
+  if (!videoInfo) {
+    return res.status(404).json({ err: '视频不存在' })
+  }
+  const comment = await new Videocomment({
+    content: req.body.content,
+    user: req.user.userinfo._id,
+    video: videoId,
+  }).save()
+  videoInfo.commentCount++
+  await videoInfo.save()
+  res.status(200).json({ data: comment })
 }

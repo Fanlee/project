@@ -15,6 +15,7 @@ const router = express.Router()
 router.get('/getvod', verfiyToken(), vodController.getvod)
 router.get('/videolists', verfiyToken(false), videoController.videolist)
 router.get('/video/:videoId', verfiyToken(false), videoController.video)
+router.post('/comment/:videoId', verfiyToken(), videoController.comment)
 router.post(
   '/createvideo',
   verfiyToken(),
