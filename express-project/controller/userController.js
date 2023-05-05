@@ -2,7 +2,7 @@
  * @Author: lihuan
  * @Date: 2023-03-29 22:54:19
  * @LastEditors: lihuan
- * @LastEditTime: 2023-05-05 21:58:04
+ * @LastEditTime: 2023-05-05 22:48:34
  * @Description:
  */
 const fs = require('fs/promises')
@@ -117,7 +117,7 @@ exports.channel = async (req, res) => {
       isSubscribe = true
     }
   }
-  const { _id, username, image, subscribeCount, cover, channeldes, ...rest } =
+  const { _id, username, image, subscribeCount, cover, channeldes } =
     await User.findById(req.params.channelId)
   res.status(200).json({
     data: {
@@ -130,4 +130,25 @@ exports.channel = async (req, res) => {
       isSubscribe,
     },
   })
+}
+
+// 获取关注频道列表
+exports.subscribeList = async (req, res) => {
+  const data = await Subscribe.find({
+    user: req.params.channelId,
+  }).populate('channel', '_id username image subscribeCount cover channeldes')
+
+  const result = data.map((item) => item.channel)
+
+  res.status(200).json({ data: result })
+}
+
+// 粉丝列表
+exports.channelList = async (req, res) => {
+  const data = await Subscribe.find({
+    channel: req.user.userinfo._id,
+  }).populate('user', '_id username image subscribeCount cover channeldes')
+  const result = data.map((item) => item.user)
+
+  res.status(200).json({ data: result })
 }
